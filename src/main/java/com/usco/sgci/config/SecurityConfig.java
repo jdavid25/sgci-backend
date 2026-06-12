@@ -33,6 +33,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                         .requestMatchers("/api/usuarios/**").hasRole("ADMINISTRADOR")
+                        .requestMatchers("/api/roles/**").hasRole("ADMINISTRADOR")
                         .requestMatchers("/api/categorias/**").hasRole("ADMINISTRADOR")
                         .requestMatchers("/api/convocatorias/**").hasRole("ADMINISTRADOR")
                         .requestMatchers("/api/reportes/**").hasRole("ADMINISTRADOR")

@@ -172,7 +172,42 @@ Respuesta:
 ]
 ```
 
-## 4. Categorias
+## 4. Roles
+
+Requiere rol `ADMINISTRADOR`.
+
+### Listar roles activos
+
+```http
+GET /api/roles
+```
+
+Respuesta:
+
+```json
+[
+  {
+    "id": 1,
+    "nombre": "ADMINISTRADOR",
+    "estadoId": 1,
+    "estadoNombre": "ACTIVO"
+  },
+  {
+    "id": 2,
+    "nombre": "DOCENTE",
+    "estadoId": 1,
+    "estadoNombre": "ACTIVO"
+  },
+  {
+    "id": 3,
+    "nombre": "ESTUDIANTE",
+    "estadoId": 1,
+    "estadoNombre": "ACTIVO"
+  }
+]
+```
+
+## 5. Categorias
 
 Requiere rol `ADMINISTRADOR`.
 
@@ -224,7 +259,7 @@ DELETE /api/categorias/1
 
 La eliminacion es logica: la categoria queda en estado `INACTIVO`.
 
-## 5. Convocatorias
+## 6. Convocatorias
 
 Requiere rol `ADMINISTRADOR`.
 
@@ -295,7 +330,7 @@ DELETE /api/convocatorias/1
 
 La eliminacion es logica: la convocatoria queda en estado `INACTIVO`.
 
-## 6. Postulaciones
+## 7. Postulaciones
 
 ### Crear postulacion
 
@@ -361,7 +396,7 @@ Body para rechazar:
 }
 ```
 
-## 7. Reportes
+## 8. Reportes
 
 Requiere rol `ADMINISTRADOR`.
 
@@ -422,7 +457,7 @@ Respuesta:
 ]
 ```
 
-## 8. Errores
+## 9. Errores
 
 Formato general de errores manejados por la aplicacion:
 
@@ -450,7 +485,7 @@ Errores de seguridad:
 }
 ```
 
-## 9. Orden Sugerido De Prueba Manual
+## 10. Orden Sugerido De Prueba Manual
 
 1. Ejecutar `POST /api/auth/login` con administrador.
 2. Crear un usuario estudiante con `POST /api/usuarios`.
