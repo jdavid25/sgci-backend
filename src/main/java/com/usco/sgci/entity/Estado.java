@@ -26,4 +26,7 @@ public class Estado extends AuditableEntity {
 
     @Column(name = "nombre", nullable = false, unique = true, length = 50)
     private String nombre;
+
+    @Column(name = "tipo", nullable = false, length = 50)
+    private String tipo;
 }

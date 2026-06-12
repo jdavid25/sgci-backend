@@ -19,16 +19,16 @@ Si no se modificaron las migraciones iniciales:
 
 Estados:
 
-| ID | Nombre |
-| --- | --- |
-| 1 | ACTIVO |
-| 2 | INACTIVO |
-| 3 | BORRADOR |
-| 4 | PUBLICADA |
-| 5 | CERRADA |
-| 6 | PENDIENTE |
-| 7 | APROBADA |
-| 8 | RECHAZADA |
+| ID | Nombre | Tipo |
+| --- | --- | --- |
+| 1 | ACTIVO | GENERAL |
+| 2 | INACTIVO | GENERAL |
+| 3 | BORRADOR | CONVOCATORIA |
+| 4 | PUBLICADA | CONVOCATORIA |
+| 5 | CERRADA | CONVOCATORIA |
+| 6 | PENDIENTE | POSTULACION |
+| 7 | APROBADA | POSTULACION |
+| 8 | RECHAZADA | POSTULACION |
 
 Roles:
 
@@ -132,7 +132,47 @@ DELETE /api/usuarios/1
 
 La eliminacion es logica: el usuario queda en estado `INACTIVO`.
 
-## 3. Categorias
+## 3. Estados
+
+Requiere token valido.
+
+### Listar estados por tipo
+
+```http
+GET /api/estados?tipo=CONVOCATORIA
+```
+
+Tipos validos:
+
+```text
+GENERAL
+CONVOCATORIA
+POSTULACION
+```
+
+Respuesta:
+
+```json
+[
+  {
+    "id": 3,
+    "nombre": "BORRADOR",
+    "tipo": "CONVOCATORIA"
+  },
+  {
+    "id": 4,
+    "nombre": "PUBLICADA",
+    "tipo": "CONVOCATORIA"
+  },
+  {
+    "id": 5,
+    "nombre": "CERRADA",
+    "tipo": "CONVOCATORIA"
+  }
+]
+```
+
+## 4. Categorias
 
 Requiere rol `ADMINISTRADOR`.
 
@@ -184,7 +224,7 @@ DELETE /api/categorias/1
 
 La eliminacion es logica: la categoria queda en estado `INACTIVO`.
 
-## 4. Convocatorias
+## 5. Convocatorias
 
 Requiere rol `ADMINISTRADOR`.
 
@@ -255,7 +295,7 @@ DELETE /api/convocatorias/1
 
 La eliminacion es logica: la convocatoria queda en estado `INACTIVO`.
 
-## 5. Postulaciones
+## 6. Postulaciones
 
 ### Crear postulacion
 
@@ -321,7 +361,7 @@ Body para rechazar:
 }
 ```
 
-## 6. Reportes
+## 7. Reportes
 
 Requiere rol `ADMINISTRADOR`.
 
@@ -382,7 +422,7 @@ Respuesta:
 ]
 ```
 
-## 7. Errores
+## 8. Errores
 
 Formato general de errores manejados por la aplicacion:
 
@@ -410,7 +450,7 @@ Errores de seguridad:
 }
 ```
 
-## 8. Orden Sugerido De Prueba Manual
+## 9. Orden Sugerido De Prueba Manual
 
 1. Ejecutar `POST /api/auth/login` con administrador.
 2. Crear un usuario estudiante con `POST /api/usuarios`.
