@@ -30,6 +30,10 @@ public class SecurityConfig {
                         .requestMatchers("/api/usuarios/**").hasRole("ADMINISTRADOR")
                         .requestMatchers("/api/categorias/**").hasRole("ADMINISTRADOR")
                         .requestMatchers("/api/convocatorias/**").hasRole("ADMINISTRADOR")
+                        .requestMatchers(HttpMethod.GET, "/api/postulaciones/mis-postulaciones").hasRole("ESTUDIANTE")
+                        .requestMatchers(HttpMethod.POST, "/api/postulaciones").hasRole("ESTUDIANTE")
+                        .requestMatchers(HttpMethod.GET, "/api/postulaciones").hasRole("ADMINISTRADOR")
+                        .requestMatchers(HttpMethod.PUT, "/api/postulaciones/*/estado").hasRole("ADMINISTRADOR")
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception
