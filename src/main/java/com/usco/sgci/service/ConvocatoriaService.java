@@ -53,6 +53,17 @@ public class ConvocatoriaService {
     }
 
     @Transactional(readOnly = true)
+    public List<ConvocatoriaResponse> listarPublicadas() {
+        LocalDate hoy = LocalDate.now();
+        return convocatoriaRepository.findByEstadoNombreInOrderByIdAsc(List.of(ESTADO_PUBLICADA))
+                .stream()
+                .filter(convocatoria -> !hoy.isBefore(convocatoria.getFechaInicio()))
+                .filter(convocatoria -> !hoy.isAfter(convocatoria.getFechaFin()))
+                .map(this::toResponse)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
     public ConvocatoriaResponse obtenerPorId(Long id) {
         return toResponse(buscarConvocatoria(id));
     }

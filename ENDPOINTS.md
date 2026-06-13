@@ -261,12 +261,22 @@ La eliminacion es logica: la categoria queda en estado `INACTIVO`.
 
 ## 6. Convocatorias
 
-Requiere rol `ADMINISTRADOR`.
+El CRUD de convocatorias requiere rol `ADMINISTRADOR`.
 
 ### Listar convocatorias
 
 ```http
 GET /api/convocatorias
+```
+
+### Listar convocatorias publicadas
+
+Requiere rol `DOCENTE` o `ESTUDIANTE`.
+
+Devuelve solo convocatorias en estado `PUBLICADA` y dentro del rango vigente de fechas.
+
+```http
+GET /api/convocatorias/publicadas
 ```
 
 ### Obtener convocatoria por ID

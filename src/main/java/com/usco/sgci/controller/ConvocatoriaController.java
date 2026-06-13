@@ -30,6 +30,11 @@ public class ConvocatoriaController {
         return convocatoriaService.listar();
     }
 
+    @GetMapping("/publicadas")
+    public List<ConvocatoriaResponse> listarPublicadas() {
+        return convocatoriaService.listarPublicadas();
+    }
+
     @GetMapping("/{id}")
     public ConvocatoriaResponse obtenerPorId(@PathVariable Long id) {
         return convocatoriaService.obtenerPorId(id);

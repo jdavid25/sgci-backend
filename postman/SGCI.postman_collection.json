@@ -506,6 +506,24 @@
           }
         },
         {
+          "name": "Listar convocatorias publicadas",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{estudianteToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/convocatorias/publicadas"
+          }
+        },
+        {
           "name": "Obtener convocatoria por ID",
           "request": {
             "auth": {
