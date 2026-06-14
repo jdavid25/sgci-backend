@@ -15,20 +15,18 @@ Content-Type: application/json
 
 ## Datos Iniciales
 
-Si no se modificaron las migraciones iniciales:
+Con las migraciones actuales:
 
-Estados:
+Estados de negocio:
 
 | ID | Nombre | Tipo |
 | --- | --- | --- |
-| 1 | ACTIVO | GENERAL |
-| 2 | INACTIVO | GENERAL |
-| 3 | BORRADOR | CONVOCATORIA |
-| 4 | PUBLICADA | CONVOCATORIA |
-| 5 | CERRADA | CONVOCATORIA |
-| 6 | PENDIENTE | POSTULACION |
-| 7 | APROBADA | POSTULACION |
-| 8 | RECHAZADA | POSTULACION |
+| 1 | BORRADOR | CONVOCATORIA |
+| 2 | PUBLICADA | CONVOCATORIA |
+| 3 | CERRADA | CONVOCATORIA |
+| 4 | PENDIENTE | POSTULACION |
+| 5 | APROBADA | POSTULACION |
+| 6 | RECHAZADA | POSTULACION |
 
 Roles:
 
@@ -97,8 +95,7 @@ Body:
   "correo": "estudiante1@universidad.edu.co",
   "nombreUsuario": "estudiante1",
   "clave": "password123",
-  "rolId": 3,
-  "estadoId": 1
+  "rolId": 3
 }
 ```
 
@@ -117,8 +114,7 @@ Body:
   "correo": "estudiante1@universidad.edu.co",
   "nombreUsuario": "estudiante1",
   "clave": "password123",
-  "rolId": 3,
-  "estadoId": 1
+  "rolId": 3
 }
 ```
 
@@ -130,7 +126,7 @@ La clave puede omitirse o enviarse en blanco si no se desea cambiar.
 DELETE /api/usuarios/1
 ```
 
-La eliminacion es logica: el usuario queda en estado `INACTIVO`.
+La eliminacion es logica: se asigna `deleted_at` y deja de aparecer en los listados.
 
 ## 3. Estados
 
@@ -145,7 +141,6 @@ GET /api/estados?tipo=CONVOCATORIA
 Tipos validos:
 
 ```text
-GENERAL
 CONVOCATORIA
 POSTULACION
 ```
@@ -155,17 +150,17 @@ Respuesta:
 ```json
 [
   {
-    "id": 3,
+    "id": 1,
     "nombre": "BORRADOR",
     "tipo": "CONVOCATORIA"
   },
   {
-    "id": 4,
+    "id": 2,
     "nombre": "PUBLICADA",
     "tipo": "CONVOCATORIA"
   },
   {
-    "id": 5,
+    "id": 3,
     "nombre": "CERRADA",
     "tipo": "CONVOCATORIA"
   }
@@ -176,7 +171,7 @@ Respuesta:
 
 Requiere rol `ADMINISTRADOR`.
 
-### Listar roles activos
+### Listar roles
 
 ```http
 GET /api/roles
@@ -188,21 +183,15 @@ Respuesta:
 [
   {
     "id": 1,
-    "nombre": "ADMINISTRADOR",
-    "estadoId": 1,
-    "estadoNombre": "ACTIVO"
+    "nombre": "ADMINISTRADOR"
   },
   {
     "id": 2,
-    "nombre": "DOCENTE",
-    "estadoId": 1,
-    "estadoNombre": "ACTIVO"
+    "nombre": "DOCENTE"
   },
   {
     "id": 3,
-    "nombre": "ESTUDIANTE",
-    "estadoId": 1,
-    "estadoNombre": "ACTIVO"
+    "nombre": "ESTUDIANTE"
   }
 ]
 ```
@@ -257,7 +246,7 @@ Body:
 DELETE /api/categorias/1
 ```
 
-La eliminacion es logica: la categoria queda en estado `INACTIVO`.
+La eliminacion es logica: se asigna `deleted_at` y deja de aparecer en los listados.
 
 ## 6. Convocatorias
 
@@ -300,7 +289,7 @@ Body:
   "fechaInicio": "2026-06-12",
   "fechaFin": "2026-07-12",
   "cuposDisponibles": 10,
-  "estadoId": 4,
+  "estadoId": 2,
   "categoriaIds": [1, 3]
 }
 ```
@@ -309,7 +298,7 @@ Reglas:
 
 - `fechaFin` debe ser mayor o igual a `fechaInicio`.
 - `cuposDisponibles` debe ser mayor a cero.
-- Las categorias deben estar activas.
+- Las categorias no deben estar eliminadas.
 - Estados validos: `BORRADOR`, `PUBLICADA`, `CERRADA`.
 
 ### Actualizar convocatoria
@@ -327,7 +316,7 @@ Body:
   "fechaInicio": "2026-06-12",
   "fechaFin": "2026-07-20",
   "cuposDisponibles": 12,
-  "estadoId": 4,
+  "estadoId": 2,
   "categoriaIds": [1, 3]
 }
 ```
@@ -338,7 +327,7 @@ Body:
 DELETE /api/convocatorias/1
 ```
 
-La eliminacion es logica: la convocatoria queda en estado `INACTIVO`.
+La eliminacion es logica: se asigna `deleted_at` y deja de aparecer en los listados.
 
 ## 7. Postulaciones
 
@@ -394,7 +383,7 @@ Body para aprobar:
 
 ```json
 {
-  "estadoId": 7
+  "estadoId": 5
 }
 ```
 
@@ -402,7 +391,7 @@ Body para rechazar:
 
 ```json
 {
-  "estadoId": 8
+  "estadoId": 6
 }
 ```
 

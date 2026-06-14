@@ -7,11 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
 
-    Optional<Categoria> findByIdAndEstadoNombre(Long id, String estadoNombre);
+    Optional<Categoria> findByIdAndDeletedAtIsNull(Long id);
 
-    List<Categoria> findByEstadoNombreOrderByIdAsc(String estadoNombre);
+    List<Categoria> findByDeletedAtIsNullOrderByIdAsc();
 
-    boolean existsByNombre(String nombre);
+    boolean existsByNombreAndDeletedAtIsNull(String nombre);
 
-    boolean existsByNombreAndIdNot(String nombre, Long id);
+    boolean existsByNombreAndIdNotAndDeletedAtIsNull(String nombre, Long id);
 }

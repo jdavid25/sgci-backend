@@ -25,6 +25,7 @@ public interface PostulacionRepository extends JpaRepository<Postulacion, Long> 
             )
             from Postulacion p
             where p.convocatoria.estado.nombre in :estadosConvocatoria
+              and p.convocatoria.deletedAt is null
             group by p.convocatoria.id, p.convocatoria.nombre
             order by p.convocatoria.nombre
             """)
@@ -40,6 +41,7 @@ public interface PostulacionRepository extends JpaRepository<Postulacion, Long> 
             from Postulacion p
             where p.estado.nombre in :estadosPostulacion
               and p.convocatoria.estado.nombre in :estadosConvocatoria
+              and p.convocatoria.deletedAt is null
             group by p.estado.nombre
             order by p.estado.nombre
             """)

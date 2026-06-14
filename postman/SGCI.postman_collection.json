@@ -203,7 +203,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"identificacion\": \"{{$timestamp}}\",\n  \"nombre\": \"Estudiante Postman\",\n  \"correo\": \"estudiante{{$timestamp}}@universidad.edu.co\",\n  \"nombreUsuario\": \"estudiante{{$timestamp}}\",\n  \"clave\": \"password123\",\n  \"rolId\": 3,\n  \"estadoId\": 1\n}",
+              "raw": "{\n  \"identificacion\": \"{{$timestamp}}\",\n  \"nombre\": \"Estudiante Postman\",\n  \"correo\": \"estudiante{{$timestamp}}@universidad.edu.co\",\n  \"nombreUsuario\": \"estudiante{{$timestamp}}\",\n  \"clave\": \"password123\",\n  \"rolId\": 3\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -235,7 +235,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"identificacion\": \"{{estudianteIdentificacion}}\",\n  \"nombre\": \"Estudiante Postman Actualizado\",\n  \"correo\": \"{{estudianteCorreo}}\",\n  \"nombreUsuario\": \"{{estudianteNombreUsuario}}\",\n  \"clave\": \"password123\",\n  \"rolId\": 3,\n  \"estadoId\": 1\n}",
+              "raw": "{\n  \"identificacion\": \"{{estudianteIdentificacion}}\",\n  \"nombre\": \"Estudiante Postman Actualizado\",\n  \"correo\": \"{{estudianteCorreo}}\",\n  \"nombreUsuario\": \"{{estudianteNombreUsuario}}\",\n  \"clave\": \"password123\",\n  \"rolId\": 3\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -268,24 +268,6 @@
     {
       "name": "3. Estados",
       "item": [
-        {
-          "name": "Listar estados GENERAL",
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{adminToken}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": "{{baseUrl}}/api/estados?tipo=GENERAL"
-          }
-        },
         {
           "name": "Listar estados CONVOCATORIA",
           "request": {
@@ -328,7 +310,7 @@
       "name": "4. Roles",
       "item": [
         {
-          "name": "Listar roles activos",
+          "name": "Listar roles",
           "request": {
             "auth": {
               "type": "bearer",
@@ -577,7 +559,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"nombre\": \"Convocatoria Postman {{$timestamp}}\",\n  \"descripcion\": \"Convocatoria creada desde Postman.\",\n  \"fechaInicio\": \"2026-06-12\",\n  \"fechaFin\": \"2026-07-12\",\n  \"cuposDisponibles\": 10,\n  \"estadoId\": 4,\n  \"categoriaIds\": [{{categoriaId}}]\n}",
+              "raw": "{\n  \"nombre\": \"Convocatoria Postman {{$timestamp}}\",\n  \"descripcion\": \"Convocatoria creada desde Postman.\",\n  \"fechaInicio\": \"2026-06-12\",\n  \"fechaFin\": \"2026-07-12\",\n  \"cuposDisponibles\": 10,\n  \"estadoId\": 2,\n  \"categoriaIds\": [{{categoriaId}}]\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -609,7 +591,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"nombre\": \"Convocatoria Postman Actualizada {{convocatoriaId}}\",\n  \"descripcion\": \"Convocatoria actualizada desde Postman.\",\n  \"fechaInicio\": \"2026-06-12\",\n  \"fechaFin\": \"2026-07-20\",\n  \"cuposDisponibles\": 12,\n  \"estadoId\": 4,\n  \"categoriaIds\": [{{categoriaId}}]\n}",
+              "raw": "{\n  \"nombre\": \"Convocatoria Postman Actualizada {{convocatoriaId}}\",\n  \"descripcion\": \"Convocatoria actualizada desde Postman.\",\n  \"fechaInicio\": \"2026-06-12\",\n  \"fechaFin\": \"2026-07-20\",\n  \"cuposDisponibles\": 12,\n  \"estadoId\": 2,\n  \"categoriaIds\": [{{categoriaId}}]\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -746,7 +728,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"estadoId\": 7\n}",
+              "raw": "{\n  \"estadoId\": 5\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -778,7 +760,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"estadoId\": 8\n}",
+              "raw": "{\n  \"estadoId\": 6\n}",
               "options": {
                 "raw": {
                   "language": "json"

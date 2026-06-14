@@ -30,10 +30,6 @@ public record UsuarioCreateRequest(
 
         @NotNull
         @Positive
-        Long rolId,
-
-        @NotNull
-        @Positive
-        Long estadoId
+        Long rolId
 ) {
 }

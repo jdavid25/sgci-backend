@@ -12,13 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class RolService {
 
-    private static final String ESTADO_ACTIVO = "ACTIVO";
-
     private final RolRepository rolRepository;
 
     @Transactional(readOnly = true)
-    public List<RolResponse> listarActivos() {
-        return rolRepository.findByEstadoNombreOrderByIdAsc(ESTADO_ACTIVO)
+    public List<RolResponse> listar() {
+        return rolRepository.findByDeletedAtIsNullOrderByIdAsc()
                 .stream()
                 .map(this::toResponse)
                 .toList();
@@ -27,9 +25,7 @@ public class RolService {
     private RolResponse toResponse(Rol rol) {
         return new RolResponse(
                 rol.getId(),
-                rol.getNombre(),
-                rol.getEstado().getId(),
-                rol.getEstado().getNombre()
+                rol.getNombre()
         );
     }
 }

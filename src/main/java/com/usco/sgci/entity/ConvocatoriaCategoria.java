@@ -33,8 +33,4 @@ public class ConvocatoriaCategoria extends AuditableEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "estado_id", nullable = false)
-    private Estado estado;
 }

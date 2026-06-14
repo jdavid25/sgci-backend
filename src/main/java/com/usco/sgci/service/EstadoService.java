@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class EstadoService {
 
-    private static final Set<String> TIPOS_VALIDOS = Set.of("GENERAL", "CONVOCATORIA", "POSTULACION");
+    private static final Set<String> TIPOS_VALIDOS = Set.of("CONVOCATORIA", "POSTULACION");
 
     private final EstadoRepository estadoRepository;
 
@@ -22,7 +22,7 @@ public class EstadoService {
     public List<EstadoResponse> listarPorTipo(String tipo) {
         String tipoNormalizado = normalizarTipo(tipo);
 
-        return estadoRepository.findByTipoOrderByIdAsc(tipoNormalizado)
+        return estadoRepository.findByTipoAndDeletedAtIsNullOrderByIdAsc(tipoNormalizado)
                 .stream()
                 .map(this::toResponse)
                 .toList();

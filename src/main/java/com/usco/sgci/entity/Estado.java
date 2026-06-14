@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,9 +25,12 @@ public class Estado extends AuditableEntity {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @Column(name = "nombre", nullable = false, unique = true, length = 50)
+    @Column(name = "nombre", nullable = false, length = 50)
     private String nombre;
 
     @Column(name = "tipo", nullable = false, length = 50)
     private String tipo;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
 }

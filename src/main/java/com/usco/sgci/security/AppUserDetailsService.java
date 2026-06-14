@@ -16,14 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AppUserDetailsService implements UserDetailsService {
 
-    private static final String ESTADO_ACTIVO = "ACTIVO";
-
     private final UsuarioRepository usuarioRepository;
 
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Usuario usuario = usuarioRepository.findByNombreUsuarioAndEstadoNombre(username, ESTADO_ACTIVO)
+        Usuario usuario = usuarioRepository.findByNombreUsuarioAndDeletedAtIsNull(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado."));
 
         return new User(

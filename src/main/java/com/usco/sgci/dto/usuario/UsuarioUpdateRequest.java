@@ -29,10 +29,6 @@ public record UsuarioUpdateRequest(
 
         @NotNull
         @Positive
-        Long rolId,
-
-        @NotNull
-        @Positive
-        Long estadoId
+        Long rolId
 ) {
 }

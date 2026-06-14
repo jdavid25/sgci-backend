@@ -7,23 +7,21 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
-    Optional<Usuario> findByNombreUsuario(String nombreUsuario);
+    Optional<Usuario> findByNombreUsuarioAndDeletedAtIsNull(String nombreUsuario);
 
-    Optional<Usuario> findByNombreUsuarioAndEstadoNombre(String nombreUsuario, String estadoNombre);
+    Optional<Usuario> findByIdAndDeletedAtIsNull(Long id);
 
-    Optional<Usuario> findByIdAndEstadoNombre(Long id, String estadoNombre);
+    List<Usuario> findByDeletedAtIsNullOrderByIdAsc();
 
-    List<Usuario> findByEstadoNombreOrderByIdAsc(String estadoNombre);
+    boolean existsByIdentificacionAndDeletedAtIsNull(String identificacion);
 
-    boolean existsByIdentificacion(String identificacion);
+    boolean existsByCorreoAndDeletedAtIsNull(String correo);
 
-    boolean existsByCorreo(String correo);
+    boolean existsByNombreUsuarioAndDeletedAtIsNull(String nombreUsuario);
 
-    boolean existsByNombreUsuario(String nombreUsuario);
+    boolean existsByIdentificacionAndIdNotAndDeletedAtIsNull(String identificacion, Long id);
 
-    boolean existsByIdentificacionAndIdNot(String identificacion, Long id);
+    boolean existsByCorreoAndIdNotAndDeletedAtIsNull(String correo, Long id);
 
-    boolean existsByCorreoAndIdNot(String correo, Long id);
-
-    boolean existsByNombreUsuarioAndIdNot(String nombreUsuario, Long id);
+    boolean existsByNombreUsuarioAndIdNotAndDeletedAtIsNull(String nombreUsuario, Long id);
 }

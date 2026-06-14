@@ -18,7 +18,7 @@ Modulos implementados:
 
 - Autenticacion con JWT.
 - Gestion de usuarios.
-- Consulta de roles activos para administradores.
+- Consulta de roles para administradores.
 - Consulta de estados por tipo.
 - Gestion de categorias.
 - Gestion de convocatorias.
@@ -86,8 +86,7 @@ Migraciones actuales:
 
 - `V1__schema_inicial.sql`: crea tablas, llaves primarias, foraneas y restricciones.
 - `V2__datos_iniciales.sql`: inserta estados, roles, categorias y usuario administrador inicial.
-- `V3__indices_consultas.sql`: crea indices para consultas y reportes.
-- `V4__agregar_tipo_estados.sql`: agrega el campo `tipo` a `estados` y clasifica los estados.
+- `V3__indices_consultas.sql`: crea indices para consultas, reportes y valores unicos filtrados.
 
 ## Modelo Principal
 
@@ -101,13 +100,14 @@ Tablas principales:
 - `convocatoria_categoria`
 - `postulaciones`
 
-Los estados se manejan en una tabla central `estados`.
+Los estados de negocio se manejan en una tabla central `estados`.
 
 Tipos de estado:
 
-- `GENERAL`: `ACTIVO`, `INACTIVO`
 - `CONVOCATORIA`: `BORRADOR`, `PUBLICADA`, `CERRADA`
 - `POSTULACION`: `PENDIENTE`, `APROBADA`, `RECHAZADA`
+
+Los registros eliminables usan borrado logico mediante `deleted_at`.
 
 ## Usuario Inicial
 
@@ -153,6 +153,7 @@ Reglas principales:
 - `/api/usuarios/**`: solo `ADMINISTRADOR`.
 - `/api/roles/**`: solo `ADMINISTRADOR`.
 - `/api/categorias/**`: solo `ADMINISTRADOR`.
+- `GET /api/convocatorias/publicadas`: `DOCENTE` o `ESTUDIANTE`.
 - `/api/convocatorias/**`: solo `ADMINISTRADOR`.
 - `/api/reportes/**`: solo `ADMINISTRADOR`.
 - `POST /api/postulaciones`: solo `ESTUDIANTE`.

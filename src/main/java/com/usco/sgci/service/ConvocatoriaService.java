@@ -16,6 +16,8 @@ import com.usco.sgci.repository.ConvocatoriaCategoriaRepository;
 import com.usco.sgci.repository.ConvocatoriaRepository;
 import com.usco.sgci.repository.EstadoRepository;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,8 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ConvocatoriaService {
 
-    private static final String ESTADO_ACTIVO = "ACTIVO";
-    private static final String ESTADO_INACTIVO = "INACTIVO";
+    private static final String TIPO_CONVOCATORIA = "CONVOCATORIA";
     private static final String ESTADO_BORRADOR = "BORRADOR";
     private static final String ESTADO_PUBLICADA = "PUBLICADA";
     private static final String ESTADO_CERRADA = "CERRADA";
@@ -46,7 +47,7 @@ public class ConvocatoriaService {
 
     @Transactional(readOnly = true)
     public List<ConvocatoriaResponse> listar() {
-        return convocatoriaRepository.findByEstadoNombreInOrderByIdAsc(ESTADOS_CONVOCATORIA)
+        return convocatoriaRepository.findByEstadoNombreInAndDeletedAtIsNullOrderByIdAsc(ESTADOS_CONVOCATORIA)
                 .stream()
                 .map(this::toResponse)
                 .toList();
@@ -55,7 +56,7 @@ public class ConvocatoriaService {
     @Transactional(readOnly = true)
     public List<ConvocatoriaResponse> listarPublicadas() {
         LocalDate hoy = LocalDate.now();
-        return convocatoriaRepository.findByEstadoNombreInOrderByIdAsc(List.of(ESTADO_PUBLICADA))
+        return convocatoriaRepository.findByEstadoNombreInAndDeletedAtIsNullOrderByIdAsc(List.of(ESTADO_PUBLICADA))
                 .stream()
                 .filter(convocatoria -> !hoy.isBefore(convocatoria.getFechaInicio()))
                 .filter(convocatoria -> !hoy.isAfter(convocatoria.getFechaFin()))
@@ -106,47 +107,40 @@ public class ConvocatoriaService {
     @Transactional
     public void eliminar(Long id) {
         Convocatoria convocatoria = buscarConvocatoria(id);
-        convocatoria.setEstado(buscarEstado(ESTADO_INACTIVO));
+        convocatoria.setDeletedAt(LocalDateTime.now(ZoneOffset.UTC));
     }
 
     private Convocatoria buscarConvocatoria(Long id) {
-        return convocatoriaRepository.findByIdAndEstadoNombreIn(id, ESTADOS_CONVOCATORIA)
+        return convocatoriaRepository.findByIdAndEstadoNombreInAndDeletedAtIsNull(id, ESTADOS_CONVOCATORIA)
                 .orElseThrow(() -> new ResourceNotFoundException("Convocatoria no encontrada."));
     }
 
     private void reemplazarCategorias(Convocatoria convocatoria, List<Long> categoriaIds) {
         Set<Long> idsUnicos = new LinkedHashSet<>(categoriaIds);
-        Estado estadoActivo = buscarEstado(ESTADO_ACTIVO);
 
         convocatoriaCategoriaRepository.deleteByConvocatoriaId(convocatoria.getId());
 
         idsUnicos.forEach(categoriaId -> {
-            Categoria categoria = categoriaRepository.findByIdAndEstadoNombre(categoriaId, ESTADO_ACTIVO)
-                    .orElseThrow(() -> new ResourceNotFoundException("Categoria activa no encontrada."));
+            Categoria categoria = categoriaRepository.findByIdAndDeletedAtIsNull(categoriaId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Categoria no encontrada."));
 
             ConvocatoriaCategoria relacion = new ConvocatoriaCategoria();
             relacion.setId(new ConvocatoriaCategoriaId(convocatoria.getId(), categoria.getId()));
             relacion.setConvocatoria(convocatoria);
             relacion.setCategoria(categoria);
-            relacion.setEstado(estadoActivo);
             convocatoriaCategoriaRepository.save(relacion);
         });
     }
 
     private Estado buscarEstadoConvocatoria(Long estadoId) {
-        Estado estado = estadoRepository.findById(estadoId)
+        Estado estado = estadoRepository.findByIdAndDeletedAtIsNull(estadoId)
                 .orElseThrow(() -> new ResourceNotFoundException("Estado no encontrado."));
 
-        if (!ESTADOS_CONVOCATORIA.contains(estado.getNombre())) {
+        if (!TIPO_CONVOCATORIA.equals(estado.getTipo()) || !ESTADOS_CONVOCATORIA.contains(estado.getNombre())) {
             throw new BusinessException("Estado no valido para convocatoria.");
         }
 
         return estado;
-    }
-
-    private Estado buscarEstado(String nombre) {
-        return estadoRepository.findByNombre(nombre)
-                .orElseThrow(() -> new ResourceNotFoundException("Estado " + nombre + " no encontrado."));
     }
 
     private void validarFechas(LocalDate fechaInicio, LocalDate fechaFin) {
@@ -157,8 +151,9 @@ public class ConvocatoriaService {
 
     private ConvocatoriaResponse toResponse(Convocatoria convocatoria) {
         List<CategoriaConvocatoriaResponse> categorias = convocatoriaCategoriaRepository
-                .findByConvocatoriaIdAndEstadoNombre(convocatoria.getId(), ESTADO_ACTIVO)
+                .findByConvocatoriaId(convocatoria.getId())
                 .stream()
+                .filter(relacion -> relacion.getCategoria().getDeletedAt() == null)
                 .map(relacion -> new CategoriaConvocatoriaResponse(
                         relacion.getCategoria().getId(),
                         relacion.getCategoria().getNombre()

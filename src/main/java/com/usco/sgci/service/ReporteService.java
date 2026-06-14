@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ReporteService {
 
-    private static final String ESTADO_ACTIVO = "ACTIVO";
     private static final String ESTADO_BORRADOR = "BORRADOR";
     private static final String ESTADO_PUBLICADA = "PUBLICADA";
     private static final String ESTADO_CERRADA = "CERRADA";
@@ -36,10 +35,7 @@ public class ReporteService {
 
     @Transactional(readOnly = true)
     public List<ConvocatoriasCategoriaReporteResponse> convocatoriasPorCategoria() {
-        return convocatoriaCategoriaRepository.contarConvocatoriasPorCategoria(
-                ESTADO_ACTIVO,
-                ESTADOS_CONVOCATORIA_VISIBLES
-        );
+        return convocatoriaCategoriaRepository.contarConvocatoriasPorCategoria(ESTADOS_CONVOCATORIA_VISIBLES);
     }
 
     @Transactional(readOnly = true)

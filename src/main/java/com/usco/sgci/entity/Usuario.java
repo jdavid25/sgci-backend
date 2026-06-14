@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,16 +28,16 @@ public class Usuario extends AuditableEntity {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @Column(name = "identificacion", nullable = false, unique = true, length = 30)
+    @Column(name = "identificacion", nullable = false, length = 30)
     private String identificacion;
 
     @Column(name = "nombre", nullable = false, length = 150)
     private String nombre;
 
-    @Column(name = "correo", nullable = false, unique = true, length = 150)
+    @Column(name = "correo", nullable = false, length = 150)
     private String correo;
 
-    @Column(name = "nombre_usuario", nullable = false, unique = true, length = 80)
+    @Column(name = "nombre_usuario", nullable = false, length = 80)
     private String nombreUsuario;
 
     @Column(name = "clave", nullable = false)
@@ -46,7 +47,6 @@ public class Usuario extends AuditableEntity {
     @JoinColumn(name = "rol_id", nullable = false)
     private Rol rol;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "estado_id", nullable = false)
-    private Estado estado;
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
 }

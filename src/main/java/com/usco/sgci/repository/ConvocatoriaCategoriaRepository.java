@@ -12,7 +12,7 @@ import org.springframework.data.repository.query.Param;
 public interface ConvocatoriaCategoriaRepository
         extends JpaRepository<ConvocatoriaCategoria, ConvocatoriaCategoriaId> {
 
-    List<ConvocatoriaCategoria> findByConvocatoriaIdAndEstadoNombre(Long convocatoriaId, String estadoNombre);
+    List<ConvocatoriaCategoria> findByConvocatoriaId(Long convocatoriaId);
 
     void deleteByConvocatoriaId(Long convocatoriaId);
 
@@ -23,14 +23,13 @@ public interface ConvocatoriaCategoriaRepository
                 count(distinct cc.convocatoria.id)
             )
             from ConvocatoriaCategoria cc
-            where cc.estado.nombre = :estadoActivo
-              and cc.categoria.estado.nombre = :estadoActivo
+            where cc.categoria.deletedAt is null
+              and cc.convocatoria.deletedAt is null
               and cc.convocatoria.estado.nombre in :estadosConvocatoria
             group by cc.categoria.id, cc.categoria.nombre
             order by cc.categoria.nombre
             """)
     List<ConvocatoriasCategoriaReporteResponse> contarConvocatoriasPorCategoria(
-            @Param("estadoActivo") String estadoActivo,
             @Param("estadosConvocatoria") Collection<String> estadosConvocatoria
     );
 }

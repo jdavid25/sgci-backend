@@ -15,8 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AuthService {
 
-    private static final String ESTADO_ACTIVO = "ACTIVO";
-
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
@@ -24,7 +22,7 @@ public class AuthService {
     @Transactional(readOnly = true)
     public LoginResponse login(LoginRequest request) {
         Usuario usuario = usuarioRepository
-                .findByNombreUsuarioAndEstadoNombre(request.nombreUsuario().trim(), ESTADO_ACTIVO)
+                .findByNombreUsuarioAndDeletedAtIsNull(request.nombreUsuario().trim())
                 .orElseThrow(() -> new UnauthorizedException("Usuario o clave invalidos."));
 
         if (!passwordEncoder.matches(request.clave(), usuario.getClave())) {

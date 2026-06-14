@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ConvocatoriaRepository extends JpaRepository<Convocatoria, Long> {
 
-    Optional<Convocatoria> findByIdAndEstadoNombreIn(Long id, Collection<String> estados);
+    Optional<Convocatoria> findByIdAndEstadoNombreInAndDeletedAtIsNull(Long id, Collection<String> estados);
 
-    List<Convocatoria> findByEstadoNombreInOrderByIdAsc(Collection<String> estados);
+    List<Convocatoria> findByEstadoNombreInAndDeletedAtIsNullOrderByIdAsc(Collection<String> estados);
 }

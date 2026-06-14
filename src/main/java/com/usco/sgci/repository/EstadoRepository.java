@@ -7,7 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface EstadoRepository extends JpaRepository<Estado, Long> {
 
-    Optional<Estado> findByNombre(String nombre);
+    Optional<Estado> findByTipoAndNombreAndDeletedAtIsNull(String tipo, String nombre);
 
-    List<Estado> findByTipoOrderByIdAsc(String tipo);
+    Optional<Estado> findByIdAndDeletedAtIsNull(Long id);
+
+    List<Estado> findByTipoAndDeletedAtIsNullOrderByIdAsc(String tipo);
 }

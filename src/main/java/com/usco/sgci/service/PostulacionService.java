@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PostulacionService {
 
-    private static final String ESTADO_ACTIVO = "ACTIVO";
+    private static final String TIPO_POSTULACION = "POSTULACION";
     private static final String ESTADO_PUBLICADA = "PUBLICADA";
     private static final String ESTADO_PENDIENTE = "PENDIENTE";
     private static final String ESTADO_APROBADA = "APROBADA";
@@ -47,7 +47,7 @@ public class PostulacionService {
         validarRolEstudiante(usuario);
 
         Convocatoria convocatoria = convocatoriaRepository
-                .findByIdAndEstadoNombreIn(request.convocatoriaId(), List.of(ESTADO_PUBLICADA))
+                .findByIdAndEstadoNombreInAndDeletedAtIsNull(request.convocatoriaId(), List.of(ESTADO_PUBLICADA))
                 .orElseThrow(() -> new ResourceNotFoundException("Convocatoria publicada no encontrada."));
 
         validarFechasConvocatoria(convocatoria);
@@ -84,10 +84,10 @@ public class PostulacionService {
         Postulacion postulacion = postulacionRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Postulacion no encontrada."));
 
-        Estado estado = estadoRepository.findById(request.estadoId())
+        Estado estado = estadoRepository.findByIdAndDeletedAtIsNull(request.estadoId())
                 .orElseThrow(() -> new ResourceNotFoundException("Estado no encontrado."));
 
-        if (!ESTADOS_RESULTADO.contains(estado.getNombre())) {
+        if (!TIPO_POSTULACION.equals(estado.getTipo()) || !ESTADOS_RESULTADO.contains(estado.getNombre())) {
             throw new BusinessException("El estado de postulacion debe ser APROBADA o RECHAZADA.");
         }
 
@@ -101,7 +101,7 @@ public class PostulacionService {
             throw new ResourceNotFoundException("Usuario autenticado no encontrado.");
         }
 
-        return usuarioRepository.findByNombreUsuarioAndEstadoNombre(authentication.getName(), ESTADO_ACTIVO)
+        return usuarioRepository.findByNombreUsuarioAndDeletedAtIsNull(authentication.getName())
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario autenticado no encontrado."));
     }
 
@@ -136,7 +136,7 @@ public class PostulacionService {
     }
 
     private Estado buscarEstado(String nombre) {
-        return estadoRepository.findByNombre(nombre)
+        return estadoRepository.findByTipoAndNombreAndDeletedAtIsNull(TIPO_POSTULACION, nombre)
                 .orElseThrow(() -> new ResourceNotFoundException("Estado " + nombre + " no encontrado."));
     }
 

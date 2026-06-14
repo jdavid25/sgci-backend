@@ -16,7 +16,7 @@ public class RolController {
     private final RolService rolService;
 
     @GetMapping
-    public List<RolResponse> listarActivos() {
-        return rolService.listarActivos();
+    public List<RolResponse> listar() {
+        return rolService.listar();
     }
 }
