@@ -24,7 +24,7 @@ VALUES
 -- Usuario inicial solo para desarrollo local.
 -- Nombre de usuario: admin
 -- Correo: admin@universidad.edu.co
--- Password temporal: password
+-- Password temporal: password123
 -- Cambiar la clave cuando se implemente el flujo de gestion de usuarios.
 INSERT INTO dbo.usuarios (
     identificacion,
@@ -39,7 +39,7 @@ SELECT
     'Administrador SGCI',
     'admin@universidad.edu.co',
     'admin',
-    '$2a$10$N9qo8uLOickgx2ZMRZoMye.IjZAgcfl7p92ldGxad68LJZdL17lhWy',
+    '$2a$10$0ckI6D9vzdu0oZPAP0pNMus1kLzCzeqrgMpZlKCuam095Oh78.YfK',
     roles.id
 FROM dbo.roles roles
 WHERE roles.nombre = 'ADMINISTRADOR';

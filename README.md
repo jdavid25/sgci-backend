@@ -116,7 +116,7 @@ Usuario administrador inicial de desarrollo:
 ```text
 nombre_usuario: admin
 correo: admin@universidad.edu.co
-clave: password
+clave: password123
 ```
 
 Con este usuario se obtiene el JWT inicial desde:
